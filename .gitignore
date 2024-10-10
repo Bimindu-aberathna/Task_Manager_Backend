@@ -1,0 +1,49 @@
+# Laravel specific files
+/vendor
+/node_modules
+/public/hot
+/public/storage
+/.env
+/.idea
+/.vagrant
+/.vscode
+/.DS_Store
+Thumbs.db
+*.log
+*.sql
+*.sqlite
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+
+# Composer dependencies
+composer.lock
+composer.phar
+
+# Backup files
+*.bak
+*.swp
+*.swo
+
+# IDE files
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Laravel specific caches
+bootstrap/cache/*.php
+bootstrap/cache/*.json
+storage/*.key
+storage/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+storage/framework/testing/*
+storage/framework/testing/cache/*
+storage/framework/testing/sessions/*
+storage/framework/testing/views/*
+
+# Operating System files
+.DS_Store
+Thumbs.db
