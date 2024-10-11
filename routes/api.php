@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 // Single route
 Route::get('/todos', [Todo_Contoller::class, 'index']);
-
+//
 // Group of routes
+
+//
 Route::prefix('api')->group(function () {
     Route::get('/todos', [Todo_Contoller::class, 'index']);
     Route::post('/todos', [Todo_Contoller::class, 'store']);
