@@ -33,14 +33,24 @@ class Todo_Contoller extends Controller
         }
     }
 
-    public function show(Todo $todo)
-    {
-        return response()->json($todo);
-    }
-
-    public function update(Request $request, Todo $todo)
+    public function show($id)
     {
         try {
+            $todo = Todo::findOrFail($id);
+            return response()->json($todo);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Todo not found',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $todo = Todo::findOrFail($id);
+            
             $validatedData = $request->validate([
                 'task' => 'sometimes|required|max:255',
                 'description' => 'sometimes|required',
@@ -50,6 +60,11 @@ class Todo_Contoller extends Controller
 
             $todo->update($validatedData);
             return response()->json($todo);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Todo not found',
+                'error' => $e->getMessage()
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to update todo',
@@ -58,11 +73,19 @@ class Todo_Contoller extends Controller
         }
     }
 
-    public function destroy(Todo $todo)
+    public function destroy($id)
     {
         try {
+            $todo = Todo::findOrFail($id);
             $todo->delete();
-            return response()->json(null, 204);
+            return response()->json([
+                'message' => 'Todo deleted successfully'
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Todo not found',
+                'error' => $e->getMessage()
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to delete todo',

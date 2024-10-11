@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/todos', [Todo_Contoller::class, 'index']);
 
 // Group of routes
-Route::prefix('todos')->group(function () {
-    Route::get('/', [Todo_Contoller::class, 'index']);
-    Route::post('/', [Todo_Contoller::class, 'store']);
-    Route::get('/{todo}', [Todo_Contoller::class, 'show']);
-    Route::put('/{todo}', [Todo_Contoller::class, 'update']);
-    Route::delete('/{todo}', [Todo_Contoller::class, 'destroy']);
+Route::prefix('api')->group(function () {
+    Route::get('/todos', [Todo_Contoller::class, 'index']);
+    Route::post('/todos', [Todo_Contoller::class, 'store']);
+    Route::get('/todos/{id}', [Todo_Contoller::class, 'show']);
+    Route::put('/todos/{id}', [Todo_Contoller::class, 'update']);
+    Route::delete('/todos/{id}', [Todo_Contoller::class, 'destroy']);
 });
 
 Route::apiResource('todos', Todo_Contoller::class);
