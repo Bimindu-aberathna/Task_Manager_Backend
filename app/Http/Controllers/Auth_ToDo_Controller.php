@@ -72,14 +72,45 @@ class Auth_ToDo_Controller extends Controller
 
     /**
      * Auth data , profile data
+     * @param NA
+     * @return JSONResponse
      */
-    public function userProfile(string $id)
+    public function userProfile()
     {
         try {
-           dd(Auth::user());
+           
+            $user = Auth::user();
+            if ($user) {
+                return ResponseHelper::success(message:'User profile fetched successfully', data:$user, statusCode:201);
+                
+             }
+             return ResponseHelper::success(message:'Unable to profile fetched successfully',statusCode:400);
+
         } catch (Exception $e) {
             FacadesLog::error('Unable to connect user profile: ' . $e->getMessage() . ' at line ' . $e->getLine());
             return ResponseHelper::error(message: 'Unable to connect user profile: ' . $e->getMessage(), statusCode: 400);
+        }
+    }
+    /**
+     * Auth data , profile data
+     * @param NA
+     * @return JSONResponse
+     */
+    public function userLogout()
+    {
+        try {
+        //    (Auth::user());
+            $user = Auth::user();
+            if ($user) {
+                $user->currentAccessToken()->delete();
+                return ResponseHelper::success(message:'User logout successfully', data:$user, statusCode:201);
+                
+             }
+             return ResponseHelper::success(message:'Unable to logout ',statusCode:400);
+
+        } catch (Exception $e) {
+            FacadesLog::error('Unable to logout: ' . $e->getMessage() . ' at line ' . $e->getLine());
+            return ResponseHelper::error(message: 'Unable to logout: ' . $e->getMessage(), statusCode: 400);
         }
     }
 }
