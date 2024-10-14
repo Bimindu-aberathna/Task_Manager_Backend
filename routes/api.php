@@ -1,22 +1,33 @@
 <?php
 
+// use App\Http\Controllers\Api\AuthContoller;
+
+use App\Http\Controllers\Auth_ToDo_Controller;
 use App\Http\Controllers\Todo_Contoller;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-// Single route
-Route::get('/todos', [Todo_Contoller::class, 'index']);
 
-// Group of routes
-Route::prefix('todos')->group(function () {
-    Route::get('/', [Todo_Contoller::class, 'index']);
-    Route::post('/', [Todo_Contoller::class, 'store']);
-    Route::get('/{todo}', [Todo_Contoller::class, 'show']);
-    Route::put('/{todo}', [Todo_Contoller::class, 'update']);
-    Route::delete('/{todo}', [Todo_Contoller::class, 'destroy']);
+
+// Auth routes
+Route::controller(Auth_ToDo_Controller::class)->group(function() {
+    Route::post('register', 'register');
+    Route::post('login', 'login');
 });
 
-Route::apiResource('todos', Todo_Contoller::class);
+// Protected routes
+// Route::middleware('auth:sanctum')->group(function () {
+    Route::get('logout', [Auth_ToDo_Controller::class, 'userLogout']);
+    // User profile and logout
+    Route::get('users', [Auth_ToDo_Controller::class, 'userProfile']);
+
+    // Todo routes
+    Route::get('/todos', [Todo_Contoller::class, 'index']);
+    Route::post('/todos', [Todo_Contoller::class, 'store']);
+    Route::get('/todos/{id}', [Todo_Contoller::class, 'show']);
+    Route::put('/todos/{id}', [Todo_Contoller::class, 'update']);
+    Route::delete('/todos/{id}', [Todo_Contoller::class, 'destroy']);
+
+    Route::apiResource('todos', Todo_Contoller::class);
+// });
+
 

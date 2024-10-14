@@ -17,6 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('status')->nullable();
             $table->date('date')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +28,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('todos', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+        });
         Schema::dropIfExists('todos');
+        
     }
 };
