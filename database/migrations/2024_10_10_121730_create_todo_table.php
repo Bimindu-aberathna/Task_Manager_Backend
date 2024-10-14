@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('todo', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('task')->nullable();
             $table->text('description');
             $table->string('status')->nullable();

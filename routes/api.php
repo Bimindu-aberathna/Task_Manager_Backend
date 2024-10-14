@@ -15,10 +15,10 @@ Route::controller(Auth_ToDo_Controller::class)->group(function() {
 });
 
 // Protected routes
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
+    Route::get('logout', [Auth_ToDo_Controller::class, 'userLogout']);
     // User profile and logout
     Route::get('users', [Auth_ToDo_Controller::class, 'userProfile']);
-    Route::get('logout', [Auth_ToDo_Controller::class, 'userLogout']);
 
     // Todo routes
     Route::get('/todos', [Todo_Contoller::class, 'index']);
@@ -28,6 +28,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/todos/{id}', [Todo_Contoller::class, 'destroy']);
 
     Route::apiResource('todos', Todo_Contoller::class);
-});
+// });
 
 

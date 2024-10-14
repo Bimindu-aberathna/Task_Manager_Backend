@@ -4,9 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class Todo_Contoller extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
+    }
+
     public function index()
     {
         $todos = Todo::all();
@@ -21,11 +31,9 @@ class Todo_Contoller extends Controller
                 'description' => 'required',
                 'status' => 'nullable|in:pending,in_progress,completed',
                 'date' => 'nullable|date',
-                'user_id' => 'required|exists:users,id'
-
             ]);
-
-            $todo = Todo::create($validatedData);
+            
+            $todo = $request->user()->todos()->create($validatedData);
             return response()->json($todo, 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -38,7 +46,6 @@ class Todo_Contoller extends Controller
     public function show($id)
     {
         try {
-            // $todo = Todo::findOrFail($id);
             $todo = Todo::with('user')->findOrFail($id);
             return response()->json($todo);
         } catch (\Exception $e) {
@@ -59,7 +66,6 @@ class Todo_Contoller extends Controller
                 'description' => 'sometimes|required',
                 'status' => 'nullable|in:pending,in_progress,completed',
                 'date' => 'nullable|date',
-                'user_id' => 'sometimes|required|exists:users,id'
             ]);
 
             $todo->update($validatedData);
