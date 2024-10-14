@@ -28,12 +28,12 @@ class Todo_Contoller extends Controller
         try {
             $validatedData = $request->validate([
                 'task' => 'required|max:255',
-                'description' => 'required',
-                'status' => 'nullable|in:pending,in_progress,completed',
-                'date' => 'nullable|date',
+                'description' => 'required|nullable',
+                'date' => 'date',
             ]);
-            
-            $todo = $request->user()->todos()->create($validatedData);
+            $validatedData['status'] = 0;
+            $todo = Todo::create($validatedData);
+           //$todo = $request->user()->todos()->create($validatedData);
             return response()->json($todo, 201);
         } catch (\Exception $e) {
             return response()->json([
